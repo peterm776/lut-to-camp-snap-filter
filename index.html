@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUBE to .flt Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-glow {
+            box-shadow: 0 0 5px rgba(66, 153, 225, 0.5), 0 0 10px rgba(66, 153, 225, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover, .btn-glow:focus {
+            box-shadow: 0 0 10px rgba(66, 153, 225, 0.8), 0 0 20px rgba(66, 153, 225, 0.5);
+        }
+        .btn-disabled {
+            cursor: not-allowed;
+            background-color: #a0aec0;
+            box-shadow: none;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .file-label {
+            display: block;
+            padding: 0.75rem 1rem;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .file-label:hover { background-color: #f9fafb; }
+        .dark .file-label { border-color: #4b5563; }
+        .dark .file-label:hover { background-color: #374151; }
+        canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            background-color: #e5e7eb;
+        }
+        .dark canvas {
+             background-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-6">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">.CUBE to .FLT Converter</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">For CampSnap Digital Cameras</p>
+        </div>
+
+        <!-- Inputs Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">1. Upload .CUBE File</label>
+                <input type="file" id="cube-file-input" class="hidden" accept=".cube">
+                <label for="cube-file-input" class="file-label" id="cube-file-label">Select .cube</label>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">2. (Optional) Upload Preview Image</label>
+                <input type="file" id="image-file-input" class="hidden" accept="image/*">
+                <label for="image-file-input" class="file-label" id="image-file-label">Select Image</label>
+            </div>
+        </div>
+        
+        <!-- Action Button -->
+        <div id="action-area" class="pt-4 text-center hidden">
+            <button id="convert-button" class="w-full md:w-1/2 flex items-center justify-center bg-blue-600 text-white font-bold py-3 px-6 rounded-lg btn-glow hover:bg-blue-700 mx-auto">
+                <span id="convert-btn-text">Download .FLT File</span>
+            </button>
+        </div>
+        
+        <div id="processing-indicator" class="text-center pt-4 hidden">
+             <div class="flex justify-center items-center">
+                <div class="loader"></div>
+                <p class="ml-4 text-gray-600 dark:text-gray-400">Analyzing CUBE file...</p>
+            </div>
+        </div>
+
+        <!-- Preview Canvases -->
+        <div id="preview-section" class="pt-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center">
+                    <h3 class="font-semibold mb-2">Original</h3>
+                    <canvas id="canvas-original"></canvas>
+                </div>
+                <div class="text-center">
+                    <h3 class="font-semibold mb-2">Target LUT</h3>
+                    <canvas id="canvas-lut"></canvas>
+                </div>
+                <div class="text-center">
+                    <h3 class="font-semibold mb-2">Accurate FLT Conversion</h3>
+                    <canvas id="canvas-flt"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error/Success Messages -->
+        <div id="error-box" class="hidden p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg">
+            <p class="font-bold text-red-800 dark:text-red-300">Error</p>
+            <p id="error-message" class="text-sm text-red-700 dark:text-red-400"></p>
+        </div>
+    </div>
+
+    <script>
+        // --- Start of Linear Algebra Micro-Library ---
+        // Contains functions for matrix operations needed for least-squares solving.
+        const linAlg = {
+            multiply: (A, B) => {
+                const C = Array(A.length).fill(0).map(() => Array(B[0].length).fill(0));
+                return C.map((row, i) =>
+                    row.map((_, j) =>
+                        A[i].reduce((sum, _, k) => sum + A[i][k] * B[k][j], 0)
+                    )
+                );
+            },
+            transpose: (A) => A[0].map((_, c) => A.map(r => r[c])),
+            invert: (A) => { // Using Cramer's rule for a 3x3 matrix
+                const det = A[0][0]*(A[1][1]*A[2][2]-A[2][1]*A[1][2]) - A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0]) + A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);
+                if (det === 0) return null; // Not invertible
+                const invDet = 1 / det;
+                const C = [
+                    [(A[1][1]*A[2][2]-A[2][1]*A[1][2]), (A[0][2]*A[2][1]-A[0][1]*A[2][2]), (A[0][1]*A[1][2]-A[0][2]*A[1][1])],
+                    [(A[1][2]*A[2][0]-A[1][0]*A[2][2]), (A[0][0]*A[2][2]-A[0][2]*A[2][0]), (A[1][0]*A[0][2]-A[0][0]*A[1][2])],
+                    [(A[1][0]*A[2][1]-A[2][0]*A[1][1]), (A[2][0]*A[0][1]-A[0][0]*A[2][1]), (A[0][0]*A[1][1]-A[1][0]*A[0][1])]
+                ];
+                return C.map(r => r.map(v => v * invDet));
+            }
+        };
+        // --- End of Linear Algebra Micro-Library ---
+        
+        // DOM Elements
+        const cubeInput = document.getElementById('cube-file-input');
+        const imageInput = document.getElementById('image-file-input');
+        const cubeLabel = document.getElementById('cube-file-label');
+        const imageLabel = document.getElementById('image-file-label');
+        const convertButton = document.getElementById('convert-button');
+        const actionArea = document.getElementById('action-area');
+        const processingIndicator = document.getElementById('processing-indicator');
+        const previewSection = document.getElementById('preview-section');
+        const canvasOriginal = document.getElementById('canvas-original');
+        const canvasLut = document.getElementById('canvas-lut');
+        const canvasFlt = document.getElementById('canvas-flt');
+        const errorBox = document.getElementById('error-box');
+        const errorMessage = document.getElementById('error-message');
+
+        // State
+        let parsedLut = null;
+        let originalImage = null;
+        let originalFileName = 'converted';
+        let generatedFltContent = null;
+        let conversionResult = null;
+
+        // Event Listeners
+        cubeInput.addEventListener('change', handleCubeFileSelect);
+        imageInput.addEventListener('change', handleImageFileSelect);
+        convertButton.addEventListener('click', handleDownload);
+        
+        async function handleCubeFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            originalFileName = file.name.replace(/\.cube$/i, '');
+            cubeLabel.textContent = file.name;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const cubeFileContent = e.target.result;
+                previewSection.classList.add('hidden');
+                actionArea.classList.add('hidden');
+                processingIndicator.classList.remove('hidden');
+                hideError();
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+
+                try {
+                    parsedLut = parseCubeFile(cubeFileContent);
+                    conversionResult = calculateAdvancedConversion(parsedLut);
+                    generatedFltContent = formatFltFile(conversionResult.matrix, conversionResult.curves);
+                    actionArea.classList.remove('hidden');
+                    if (originalImage) showPreviews();
+                } catch (err) {
+                    showError(err.message);
+                } finally {
+                    processingIndicator.classList.add('hidden');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function handleImageFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            imageLabel.textContent = file.name;
+            const reader = new FileReader();
+            reader.onload = e => {
+                originalImage = new Image();
+                originalImage.onload = () => { if (conversionResult) showPreviews(); };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showPreviews() {
+             if (!originalImage || !conversionResult || !parsedLut) return;
+             previewSection.classList.remove('hidden');
+             drawOriginalImage();
+             applyLutToCanvas();
+             applyFltToCanvas(conversionResult.matrix, conversionResult.curves);
+        }
+        
+        function calculateAdvancedConversion(lut) {
+            const samples = 20; // Use 20^3 = 8000 color samples
+            const inputs = [];
+            const outputs = [];
+            
+            for (let r = 0; r < samples; r++) {
+                for (let g = 0; g < samples; g++) {
+                    for (let b = 0; b < samples; b++) {
+                        const r_in = r / (samples - 1);
+                        const g_in = g / (samples - 1);
+                        const b_in = b / (samples - 1);
+                        inputs.push([r_in, g_in, b_in]);
+                        const out = trilinearInterpolate(r_in, g_in, b_in, lut);
+                        outputs.push(out);
+                    }
+                }
+            }
+            
+            // --- Solve for the color matrix using least-squares ---
+            // We want to find matrix M such that M * inputs' = outputs'
+            // The solution is M = (outputs' * inputs) * (inputs' * inputs)^-1
+            const Y = linAlg.transpose(outputs); // 3xN
+            const X = linAlg.transpose(inputs);  // 3xN
+            const Xt = inputs;                   // Nx3
+
+            const XtX = linAlg.multiply(X, Xt);
+            const XtX_inv = linAlg.invert(XtX);
+            if (!XtX_inv) throw new Error("Matrix calculation failed (singular matrix). The CUBE file may be a simple gamma curve.");
+
+            const YXt = linAlg.multiply(Y, Xt);
+            const M = linAlg.multiply(YXt, XtX_inv); // The 3x3 Color Matrix
+
+            // --- Calculate residual curves ---
+            // Apply the matrix to the original inputs to see what it produces
+            const matrixOutputs = linAlg.transpose(linAlg.multiply(M, X));
+            
+            const sums = { r: new Array(256).fill(0), g: new Array(256).fill(0), b: new Array(256).fill(0) };
+            const counts = { r: new Array(256).fill(0), g: new Array(256).fill(0), b: new Array(256).fill(0) };
+
+            for(let i=0; i < inputs.length; i++) {
+                const originalInput = inputs[i]; // [r,g,b] 0-1
+                const fullLutOutput = outputs[i]; // [r,g,b] 0-1
+                const matrixOutput = matrixOutputs[i]; // [r,g,b] 0-1
+                
+                // The residual is the difference the curves need to make up
+                const residual = [
+                    fullLutOutput[0] - matrixOutput[0],
+                    fullLutOutput[1] - matrixOutput[1],
+                    fullLutOutput[2] - matrixOutput[2],
+                ];
+
+                const r_in = Math.round(originalInput[0] * 255);
+                const g_in = Math.round(originalInput[1] * 255);
+                const b_in = Math.round(originalInput[2] * 255);
+
+                // The curve's target value is the original value plus the residual
+                sums.r[r_in] += originalInput[0] + residual[0];
+                counts.r[r_in]++;
+                sums.g[g_in] += originalInput[1] + residual[1];
+                counts.g[g_in]++;
+                sums.b[b_in] += originalInput[2] + residual[2];
+                counts.b[b_in]++;
+            }
+
+            const curves = { r: new Array(256), g: new Array(256), b: new Array(256) };
+            const fillGaps = (curve, sum, count) => {
+                for (let i=0; i<256; i++) { if (count[i]>0) curve[i] = Math.round(Math.max(0, Math.min(1, sum[i]/count[i])) * 255); }
+                let last=-1; for (let i=0;i<256;i++) { if(count[i]>0) { if(last===-1) for(let j=0;j<i;j++) curve[j]=curve[i]; else for(let j=last+1;j<i;j++) curve[j]=Math.round(curve[last]+(curve[i]-curve[last])*(j-last)/(i-last)); last=i;}}
+                if(last!==-1 && last<255) for(let i=last+1;i<256;i++) curve[i]=curve[last]; if(last===-1) for(let i=0;i<256;i++) curve[i]=i;
+            };
+
+            fillGaps(curves.r, sums.r, counts.r);
+            fillGaps(curves.g, sums.g, counts.g);
+            fillGaps(curves.b, sums.b, counts.b);
+            
+            const matrixForFlt = M.flat().map(v => Math.round(v * 1024));
+
+            return { matrix: matrixForFlt, curves };
+        }
+
+        function drawOriginalImage() {
+            canvasOriginal.width = originalImage.width;
+            canvasOriginal.height = originalImage.height;
+            canvasOriginal.getContext('2d').drawImage(originalImage, 0, 0);
+        }
+        
+        function applyLutToCanvas() {
+            const ctx = canvasLut.getContext('2d');
+            canvasLut.width = originalImage.width;
+            canvasLut.height = originalImage.height;
+            ctx.drawImage(originalImage, 0, 0);
+            const imageData = ctx.getImageData(0, 0, canvasLut.width, canvasLut.height);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const c = trilinearInterpolate(data[i]/255, data[i+1]/255, data[i+2]/255, parsedLut);
+                data[i] = c[0] * 255; data[i+1] = c[1] * 255; data[i+2] = c[2] * 255;
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function applyFltToCanvas(matrix, curves) {
+            const ctx = canvasFlt.getContext('2d');
+            canvasFlt.width = originalImage.width;
+            canvasFlt.height = originalImage.height;
+            ctx.drawImage(originalImage, 0, 0);
+            const imageData = ctx.getImageData(0, 0, canvasFlt.width, canvasFlt.height);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const r_in = data[i]/255, g_in = data[i+1]/255, b_in = data[i+2]/255;
+                
+                // Apply Matrix
+                const r_mat = r_in * matrix[0]/1024 + g_in * matrix[1]/1024 + b_in * matrix[2]/1024;
+                const g_mat = r_in * matrix[3]/1024 + g_in * matrix[4]/1024 + b_in * matrix[5]/1024;
+                const b_mat = r_in * matrix[6]/1024 + g_in * matrix[7]/1024 + b_in * matrix[8]/1024;
+
+                // Apply residual curves
+                data[i]   = curves.r[Math.round(Math.max(0, Math.min(1, r_mat)) * 255)];
+                data[i+1] = curves.g[Math.round(Math.max(0, Math.min(1, g_mat)) * 255)];
+                data[i+2] = curves.b[Math.round(Math.max(0, Math.min(1, b_mat)) * 255)];
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+        
+        function formatFltFile(matrix, curves) {
+            const fltHeader = 'N, N, 1, 0, N, N, N';
+            const fltMatrix = `${matrix[0]}, ${matrix[1]}, ${matrix[2]},\n${matrix[3]}, ${matrix[4]}, ${matrix[5]},\n${matrix[6]}, ${matrix[7]}, ${matrix[8]}`;
+            return `${fltHeader}\n${fltMatrix}\n${curves.r.join(', ')}\n${curves.g.join(', ')}\n${curves.b.join(', ')}`;
+        }
+
+        function handleDownload() {
+            if (!generatedFltContent) { showError("No file has been converted yet."); return; }
+            const blob = new Blob([generatedFltContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${originalFileName}.flt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function parseCubeFile(cubeData) {
+            const lines = cubeData.split('\n').map(l => l.trim().split('#')[0]);
+            let size=0, lut3D=[], domainMin=[0,0,0], domainMax=[1,1,1], dataStarted=false;
+            for (const line of lines) {
+                if (!line) continue;
+                if(dataStarted){
+                    const p = line.split(/\s+/).map(Number);
+                    if (p.length===3 && !p.some(isNaN)) lut3D.push(p);
+                    continue;
+                }
+                const p = line.split(/\s+/); const key = p[0].toUpperCase();
+                if (key === 'LUT_3D_SIZE') size = parseInt(p[1]);
+                else if (key === 'DOMAIN_MIN') domainMin = p.slice(1).map(Number);
+                else if (key === 'DOMAIN_MAX') domainMax = p.slice(1).map(Number);
+                else if (/^[\d.eE+-]/.test(line)){
+                    if (size===0) throw new Error("LUT size not defined.");
+                    dataStarted = true;
+                    const d = line.split(/\s+/).map(Number);
+                    if (d.length===3 && !d.some(isNaN)) lut3D.push(d);
+                }
+            }
+            if (size===0 || lut3D.length !== size*size*size) throw new Error('Invalid CUBE file.');
+            return { size, lut3D, domainMin, domainMax };
+        }
+        
+        function trilinearInterpolate(r, g, b, lut) {
+            const { size, lut3D, domainMin, domainMax } = lut;
+            r = Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));
+            g = Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));
+            b = Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));
+            const x=r*(size-1), y=g*(size-1), z=b*(size-1);
+            const x0=Math.floor(x), y0=Math.floor(y), z0=Math.floor(z);
+            const x1=Math.min(x0+1,size-1), y1=Math.min(y0+1,size-1), z1=Math.min(z0+1,size-1);
+            const xd=x-x0, yd=y-y0, zd=z-z0;
+            const i=(i,j,k)=>lut3D[i+j*size+k*size*size];
+            const c000=i(x0,y0,z0), c100=i(x1,y0,z0), c010=i(x0,y1,z0), c110=i(x1,y1,z0);
+            const c001=i(x0,y0,z1), c101=i(x1,y0,z1), c011=i(x0,y1,z1), c111=i(x1,y1,z1);
+            const lerp=(a,b,t)=>a*(1-t)+b*t;
+            const lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));
+            const c00=lerpVector(c000,c100,xd), c01=lerpVector(c001,c101,xd);
+            const c10=lerpVector(c010,c110,xd), c11=lerpVector(c011,c111,xd);
+            const c0=lerpVector(c00,c10,yd), c1=lerpVector(c01,c11,yd);
+            return lerpVector(c0, c1, zd);
+        }
+
+        function showError(message) { errorMessage.textContent = message; errorBox.classList.remove('hidden'); }
+        function hideError() { errorBox.classList.add('hidden'); }
+        
+    </script>
+</body>
+</html>
