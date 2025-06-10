@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CUBE to .flt Converter</title>
+    <title>LUT to CampSnap Filter | Free Online Converter</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A free, powerful online tool to convert 3D CUBE LUTs (.cube) into the .flt format for CampSnap cameras. Accurate, automatic conversion with live previews.">
+    <meta name="keywords" content="CampSnap, CUBE to FLT, LUT converter, .cube, .flt, color grading, filter, CampSnap filter, custom filter, 3D LUT, online converter, free tool, filmmaking, photography, color correction">
+    <meta name="author" content="PeterM776">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%233b82f6'%3E%3C/rect%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23ffffff'/%3E%3C/svg%3E">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,20 +22,21 @@
             font-family: 'Inter', sans-serif;
         }
         .btn-glow {
-            box-shadow: 0 0 5px rgba(66, 153, 225, 0.5), 0 0 10px rgba(66, 153, 225, 0.3);
+            box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3);
             transition: all 0.3s ease;
         }
         .btn-glow:hover, .btn-glow:focus {
-            box-shadow: 0 0 10px rgba(66, 153, 225, 0.8), 0 0 20px rgba(66, 153, 225, 0.5);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
         }
         .btn-disabled {
             cursor: not-allowed;
-            background-color: #a0aec0;
+            background-color: #94a3b8;
             box-shadow: none;
         }
         .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
             border-radius: 50%;
             width: 24px;
             height: 24px;
@@ -37,53 +47,70 @@
             100% { transform: rotate(360deg); }
         }
         .file-label {
-            display: block;
-            padding: 0.75rem 1rem;
             border: 2px dashed #d1d5db;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            text-align: center;
             transition: background-color 0.2s, border-color 0.2s;
         }
-        .file-label:hover { background-color: #f9fafb; }
         .dark .file-label { border-color: #4b5563; }
-        .dark .file-label:hover { background-color: #374151; }
+        .file-label.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .dark .file-label.dragover {
+            background-color: #1e293b;
+        }
         canvas {
             width: 100%;
             height: auto;
             border-radius: 0.5rem;
-            background-color: #e5e7eb;
+            background-color: #f3f4f6;
         }
         .dark canvas {
-             background-color: #374151;
+             background-color: #1f2937;
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4 sm:p-6">
 
-    <div class="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-6">
+    <div class="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 space-y-8 border border-gray-200 dark:border-gray-700">
         <div class="text-center">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">.CUBE to .FLT Converter</h1>
-            <p class="text-gray-500 dark:text-gray-400 mt-2">For CampSnap Digital Cameras</p>
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">LUT to CampSnap Filter</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">A powerful, accurate, one-click converter</p>
+        </div>
+
+        <!-- How to Use Section -->
+        <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-2">How It Works</h2>
+            <ol class="list-decimal list-inside text-gray-600 dark:text-gray-400 space-y-1">
+                <li>Upload an industry-standard `.cube` file. The tool automatically performs a powerful analysis to create an accurate conversion.</li>
+                <li>(Optional) Upload any photo to see a live preview of your original file, the target LUT, and the final `.flt` conversion.</li>
+                <li>Click "Download .FLT File" to save your camera-ready filter.</li>
+            </ol>
         </div>
 
         <!-- Inputs Section -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">1. Upload .CUBE File</label>
+            <div class="file-drop-area">
+                <label for="cube-file-input" class="file-label relative flex flex-col items-center justify-center w-full h-32 px-4 py-3 bg-white dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <svg class="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <span class="text-gray-600 dark:text-gray-400 font-medium">Select .CUBE File</span>
+                    <span id="cube-file-label" class="text-sm text-gray-500">or drag and drop</span>
+                </label>
                 <input type="file" id="cube-file-input" class="hidden" accept=".cube">
-                <label for="cube-file-input" class="file-label" id="cube-file-label">Select .cube</label>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">2. (Optional) Upload Preview Image</label>
+            <div class="file-drop-area">
+                <label for="image-file-input" class="file-label relative flex flex-col items-center justify-center w-full h-32 px-4 py-3 bg-white dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <svg class="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="text-gray-600 dark:text-gray-400 font-medium">Select Preview Image</span>
+                     <span id="image-file-label" class="text-sm text-gray-500">or drag and drop</span>
+                </label>
                 <input type="file" id="image-file-input" class="hidden" accept="image/*">
-                <label for="image-file-input" class="file-label" id="image-file-label">Select Image</label>
             </div>
         </div>
         
         <!-- Action Button -->
         <div id="action-area" class="pt-4 text-center hidden">
-            <button id="convert-button" class="w-full md:w-1/2 flex items-center justify-center bg-blue-600 text-white font-bold py-3 px-6 rounded-lg btn-glow hover:bg-blue-700 mx-auto">
+            <button id="convert-button" class="w-full md:w-1/2 flex items-center justify-center bg-blue-600 text-white font-bold py-3 px-6 rounded-lg btn-glow mx-auto">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 <span id="convert-btn-text">Download .FLT File</span>
             </button>
         </div>
@@ -118,14 +145,24 @@
             <p class="font-bold text-red-800 dark:text-red-300">Error</p>
             <p id="error-message" class="text-sm text-red-700 dark:text-red-400"></p>
         </div>
+        
+        <footer class="text-center pt-6 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-sm text-gray-500">A project by <a href="https://github.com/PeterM776" target="_blank" class="font-medium text-blue-600 hover:underline">PeterM776</a></p>
+        </footer>
     </div>
 
     <script>
+        // --- Web Worker Code as a string ---
+        const workerCode = `
+            const linAlg={multiply:(A,B)=>{const C=Array(A.length).fill(0).map(()=>Array(B[0].length).fill(0));return C.map((r,i)=>r.map((_,j)=>A[i].reduce((s,_,k)=>s+A[i][k]*B[k][j],0)))},transpose:A=>A[0].map((_,c)=>A.map(r=>r[c])),invert:A=>{const d=A[0][0]*(A[1][1]*A[2][2]-A[2][1]*A[1][2])-A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])+A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);if(d===0)return null;const i=1/d,C=[[A[1][1]*A[2][2]-A[2][1]*A[1][2],A[0][2]*A[2][1]-A[0][1]*A[2][2],A[0][1]*A[1][2]-A[0][2]*A[1][1]],[A[1][2]*A[2][0]-A[1][0]*A[2][2],A[0][0]*A[2][2]-A[0][2]*A[2][0],A[1][0]*A[0][2]-A[0][0]*A[1][2]],[A[1][0]*A[2][1]-A[2][0]*A[1][1],A[2][0]*A[0][1]-A[0][0]*A[2][1],A[0][0]*A[1][1]-A[1][0]*A[0][1]]];return C.map(r=>r.map(v=>v*i))}};function trilinearInterpolate(r,g,b,lut){const{size,lut3D,domainMin,domainMax}=lut;r=Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));g=Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));b=Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));const x=r*(size-1),y=g*(size-1),z=b*(size-1),x0=Math.floor(x),y0=Math.floor(y),z0=Math.floor(z),x1=Math.min(x0+1,size-1),y1=Math.min(y0+1,size-1),z1=Math.min(z0+1,size-1),xd=x-x0,yd=y-y0,zd=z-z0;const i=(i,j,k)=>lut3D[i+j*size+k*size*size],c000=i(x0,y0,z0),c100=i(x1,y0,z0),c010=i(x0,y1,z0),c110=i(x1,y1,z0),c001=i(x0,y0,z1),c101=i(x1,y0,z1),c011=i(x0,y1,z1),c111=i(x1,y1,z1);const lerp=(a,b,t)=>a*(1-t)+b*t,lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));const c00=lerpVector(c000,c100,xd),c01=lerpVector(c001,c101,xd),c10=lerpVector(c010,c110,xd),c11=lerpVector(c011,c111,xd),c0=lerpVector(c00,c10,yd),c1=lerpVector(c01,c11,yd);return lerpVector(c0,c1,zd)}
+            self.onmessage=function(e){const lut=e.data,samples=25,inputs=[],outputs=[];for(let r=0;r<samples;r++)for(let g=0;g<samples;g++)for(let b=0;b<samples;b++){const i=[r/(samples-1),g/(samples-1),b/(samples-1)];inputs.push(i);outputs.push(trilinearInterpolate(i[0],i[1],i[2],lut))}const Y=linAlg.transpose(outputs),X=linAlg.transpose(inputs),Xt=inputs,XtX=linAlg.multiply(X,Xt),XtX_inv=linAlg.invert(XtX);if(!XtX_inv){self.postMessage({error:'Matrix calculation failed. The CUBE may not have enough color data.'});return}const YXt=linAlg.multiply(Y,Xt),M=linAlg.multiply(YXt,XtX_inv),matrixOutputs=linAlg.transpose(linAlg.multiply(M,X));const sums={r:new Array(256).fill(0),g:new Array(256).fill(0),b:new Array(256).fill(0)},counts={r:new Array(256).fill(0),g:new Array(256).fill(0),b:new Array(256).fill(0)};for(let i=0;i<inputs.length;i++){const o=inputs[i],f=outputs[i],m=matrixOutputs[i],r=[f[0]-m[0],f[1]-m[1],f[2]-m[2]];const ri=Math.round(o[0]*255),gi=Math.round(o[1]*255),bi=Math.round(o[2]*255);sums.r[ri]+=o[0]+r[0];counts.r[ri]++;sums.g[gi]+=o[1]+r[1];counts.g[gi]++;sums.b[bi]+=o[2]+r[2];counts.b[bi]++}const curves={r:new Array(256),g:new Array(256),b:new Array(256)};const fillGaps=(c,s,n)=>{for(let i=0;i<256;i++)if(n[i]>0)c[i]=Math.round(Math.max(0,Math.min(1,s[i]/n[i]))*255);let l=-1;for(let i=0;i<256;i++)if(n[i]>0){if(l===-1)for(let j=0;j<i;j++)c[j]=c[i];else for(let j=l+1;j<i;j++)c[j]=Math.round(c[l]+(c[i]-c[l])*(j-l)/(i-l));l=i}if(l!==-1&&l<255)for(let i=l+1;i<256;i++)c[i]=c[l];if(l===-1)for(let i=0;i<256;i++)c[i]=i};fillGaps(curves.r,sums.r,counts.r);fillGaps(curves.g,sums.g,counts.g);fillGaps(curves.b,sums.b,counts.b);self.postMessage({matrix:M.flat().map(v=>Math.round(v*1024)),curves})};
+        `;
+
         // DOM Elements
         const cubeInput = document.getElementById('cube-file-input');
         const imageInput = document.getElementById('image-file-input');
-        const cubeLabel = document.getElementById('cube-file-label');
-        const imageLabel = document.getElementById('image-file-label');
+        const cubeLabelSpan = document.querySelector('#cube-file-label span:first-of-type');
+        const imageLabelSpan = document.querySelector('#image-file-label span:first-of-type');
         const convertButton = document.getElementById('convert-button');
         const actionArea = document.getElementById('action-area');
         const processingIndicator = document.getElementById('processing-indicator');
@@ -144,114 +181,39 @@
         let conversionResult = null;
         let analysisWorker;
 
-        // --- Web Worker Code as a string ---
-        const workerCode = `
-            const linAlg = {
-                multiply: (A, B) => {
-                    const C = Array(A.length).fill(0).map(() => Array(B[0].length).fill(0));
-                    return C.map((row, i) =>
-                        row.map((_, j) =>
-                            A[i].reduce((sum, _, k) => sum + A[i][k] * B[k][j], 0)
-                        )
-                    );
-                },
-                transpose: (A) => A[0].map((_, c) => A.map(r => r[c])),
-                invert: (A) => {
-                    const det = A[0][0]*(A[1][1]*A[2][2]-A[2][1]*A[1][2]) - A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0]) + A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);
-                    if (det === 0) return null;
-                    const invDet = 1 / det;
-                    const C = [
-                        [(A[1][1]*A[2][2]-A[2][1]*A[1][2]), (A[0][2]*A[2][1]-A[0][1]*A[2][2]), (A[0][1]*A[1][2]-A[0][2]*A[1][1])],
-                        [(A[1][2]*A[2][0]-A[1][0]*A[2][2]), (A[0][0]*A[2][2]-A[0][2]*A[2][0]), (A[1][0]*A[0][2]-A[0][0]*A[1][2])],
-                        [(A[1][0]*A[2][1]-A[2][0]*A[1][1]), (A[2][0]*A[0][1]-A[0][0]*A[2][1]), (A[0][0]*A[1][1]-A[1][0]*A[0][1])]
-                    ];
-                    return C.map(r => r.map(v => v * invDet));
-                }
-            };
-
-            function trilinearInterpolate(r, g, b, lut) {
-                const { size, lut3D, domainMin, domainMax } = lut;
-                r = Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));
-                g = Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));
-                b = Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));
-                const x=r*(size-1), y=g*(size-1), z=b*(size-1);
-                const x0=Math.floor(x), y0=Math.floor(y), z0=Math.floor(z);
-                const x1=Math.min(x0+1,size-1), y1=Math.min(y0+1,size-1), z1=Math.min(z0+1,size-1);
-                const xd=x-x0, yd=y-y0, zd=z-z0;
-                const i=(i,j,k)=>lut3D[i+j*size+k*size*size];
-                const c000=i(x0,y0,z0), c100=i(x1,y0,z0), c010=i(x0,y1,z0), c110=i(x1,y1,z0);
-                const c001=i(x0,y0,z1), c101=i(x1,y0,z1), c011=i(x0,y1,z1), c111=i(x1,y1,z1);
-                const lerp=(a,b,t)=>a*(1-t)+b*t;
-                const lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));
-                const c00=lerpVector(c000,c100,xd), c01=lerpVector(c001,c101,xd);
-                const c10=lerpVector(c010,c110,xd), c11=lerpVector(c011,c111,xd);
-                const c0=lerpVector(c00,c10,yd), c1=lerpVector(c01,c11,yd);
-                return lerpVector(c0, c1, zd);
-            }
-
-            self.onmessage = function(e) {
-                const lut = e.data;
-                const samples = 25; // Increased sampling density for more accuracy
-                const inputs = [];
-                const outputs = [];
-                
-                for (let r=0; r<samples; r++) for (let g=0; g<samples; g++) for (let b=0; b<samples; b++) {
-                    const r_in = r/(samples-1), g_in = g/(samples-1), b_in = b/(samples-1);
-                    inputs.push([r_in, g_in, b_in]);
-                    outputs.push(trilinearInterpolate(r_in, g_in, b_in, lut));
-                }
-                
-                const Y = linAlg.transpose(outputs), X = linAlg.transpose(inputs), Xt = inputs;
-                const XtX = linAlg.multiply(X, Xt);
-                const XtX_inv = linAlg.invert(XtX);
-                if (!XtX_inv) {
-                    self.postMessage({ error: 'Matrix calculation failed. The CUBE may not have enough color data.' });
-                    return;
-                }
-
-                const YXt = linAlg.multiply(Y, Xt);
-                const M = linAlg.multiply(YXt, XtX_inv);
-                const matrixOutputs = linAlg.transpose(linAlg.multiply(M, X));
-                
-                const sums = { r: new Array(256).fill(0), g: new Array(256).fill(0), b: new Array(256).fill(0) };
-                const counts = { r: new Array(256).fill(0), g: new Array(256).fill(0), b: new Array(256).fill(0) };
-
-                for(let i=0; i < inputs.length; i++) {
-                    const original = inputs[i], fullLut = outputs[i], matrixOut = matrixOutputs[i];
-                    const residual = [fullLut[0]-matrixOut[0], fullLut[1]-matrixOut[1], fullLut[2]-matrixOut[2]];
-                    const r_in = Math.round(original[0]*255), g_in = Math.round(original[1]*255), b_in = Math.round(original[2]*255);
-                    sums.r[r_in] += original[0] + residual[0]; counts.r[r_in]++;
-                    sums.g[g_in] += original[1] + residual[1]; counts.g[g_in]++;
-                    sums.b[b_in] += original[2] + residual[2]; counts.b[b_in]++;
-                }
-
-                const curves = { r: new Array(256), g: new Array(256), b: new Array(256) };
-                const fillGaps = (c, s, n) => {
-                    for(let i=0;i<256;i++) if(n[i]>0) c[i]=Math.round(Math.max(0,Math.min(1,s[i]/n[i]))*255);
-                    let l=-1; for(let i=0;i<256;i++) if(n[i]>0){if(l===-1)for(let j=0;j<i;j++)c[j]=c[i];else for(let j=l+1;j<i;j++)c[j]=Math.round(c[l]+(c[i]-c[l])*(j-l)/(i-l));l=i;}
-                    if(l!==-1 && l<255)for(let i=l+1;i<256;i++)c[i]=c[l];if(l===-1)for(let i=0;i<256;i++)c[i]=i;
-                };
-
-                fillGaps(curves.r, sums.r, counts.r);
-                fillGaps(curves.g, sums.g, counts.g);
-                fillGaps(curves.b, sums.b, counts.b);
-                
-                const matrixForFlt = M.flat().map(v => Math.round(v * 1024));
-                self.postMessage({ matrix: matrixForFlt, curves });
-            };
-        `;
-
         // Event Listeners
         cubeInput.addEventListener('change', handleCubeFileSelect);
         imageInput.addEventListener('change', handleImageFileSelect);
         convertButton.addEventListener('click', handleDownload);
         
+        // Drag and Drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.body.addEventListener(eventName, e => e.preventDefault());
+        });
+
+        const dropAreas = document.querySelectorAll('.file-drop-area');
+        dropAreas.forEach(area => {
+            area.addEventListener('dragover', () => area.querySelector('.file-label').classList.add('dragover'));
+            area.addEventListener('dragleave', () => area.querySelector('.file-label').classList.remove('dragover'));
+            area.addEventListener('drop', e => {
+                area.querySelector('.file-label').classList.remove('dragover');
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    const input = area.querySelector('input[type="file"]');
+                    input.files = files;
+                    const changeEvent = new Event('change', { bubbles: true });
+                    input.dispatchEvent(changeEvent);
+                }
+            });
+        });
+
         async function handleCubeFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             originalFileName = file.name.replace(/\.cube$/i, '');
-            cubeLabel.textContent = file.name;
+            cubeLabelSpan.textContent = file.name;
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const cubeFileContent = e.target.result;
@@ -305,7 +267,7 @@
         function handleImageFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
-            imageLabel.textContent = file.name;
+            imageLabelSpan.textContent = file.name;
             const reader = new FileReader();
             reader.onload = e => {
                 originalImage = new Image();
