@@ -1,5 +1,5 @@
 
-[**Live Demo**](https://peterm776.github.io/lut-to-camp-snap-filter/)
+[**Live Demo**]([https://peterm776.github.io/lut-to-campsnap/])
 
 This is a powerful, browser-based tool for converting industry-standard `.cube` 3D Look-Up Tables (LUTs) into the `.flt` format used by CampSnap digital cameras.
 
