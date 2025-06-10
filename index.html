@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-15T6NBG556"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-15T6NBG556');
-</script>
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUT to CampSnap Filter | Free Online Converter</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="A free, powerful online tool to convert 3D CUBE LUTs (.cube) into the .flt format for CampSnap cameras. Accurate, automatic conversion with live previews.">
-    <meta name="keywords" content="CampSnap, CUBE to FLT, LUT converter, .cube, .flt, color grading, filter, CampSnap filter, custom filter, 3D LUT, online converter, free tool, filmmaking, photography, color correction">
+    <meta name="description" content="A free, powerful online tool to convert 3D CUBE, PNG, ILUT, and OLUT LUTs (.cube, .png, .ilut, .olut) into the .flt format for CampSnap cameras. Accurate, automatic conversion with live previews.">
+    <meta name="keywords" content="CampSnap, CUBE to FLT, PNG to FLT, ILUT to FLT, OLUT to FLT, LUT converter, .cube, .png, .ilut, .olut, .flt, color grading, filter, CampSnap filter, custom filter, 3D LUT, 1D LUT, HALD, online converter, free tool, filmmaking, photography, color correction">
     <meta name="author" content="PeterM776">
 
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%233b82f6'%3E%3C/rect%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23ffffff'/%3E%3C/svg%3E">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-15T6NBG556"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-15T6NBG556');
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,7 +80,7 @@
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4 sm:p-6">
-  
+
     <div class="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-8 space-y-8 border border-gray-200 dark:border-gray-700">
         <div class="text-center">
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">LUT to CampSnap Filter</h1>
@@ -91,27 +91,27 @@
         <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-2">How It Works</h2>
             <ol class="list-decimal list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                <li>Upload an industry-standard `.cube` file. The tool automatically performs a powerful analysis to create an accurate conversion.</li>
+                <li>Upload an industry-standard `.cube`, `.png`, `.ilut`, or `.olut` LUT file. The tool automatically performs a powerful analysis to create an accurate conversion.</li>
                 <li>(Optional) Upload any photo to see a live preview of your original file, the target LUT, and the final `.flt` conversion.</li>
-                <li>Click "Download .FLT File" to save your camera-ready filter.</li>
+                <li>Click "Download .FLT File" to save the camera-ready filter.</li>
             </ol>
         </div>
 
         <!-- Inputs Section -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="file-drop-area">
-                <label for="cube-file-input" class="file-label relative flex flex-col items-center justify-center w-full h-32 px-4 py-3 bg-white dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                <label for="lut-file-input" class="file-label relative flex flex-col items-center justify-center w-full h-32 px-4 py-3 bg-white dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
                     <svg class="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                    <span class="text-gray-600 dark:text-gray-400 font-medium">Select .CUBE File</span>
-                    <span id="cube-file-label" class="text-sm text-gray-500">or drag and drop</span>
+                    <span id="lut-file-name" class="text-gray-600 dark:text-gray-400 font-medium">Select LUT File</span>
+                    <span class="text-sm text-gray-500">(.cube, .png, .ilut, .olut)</span>
                 </label>
-                <input type="file" id="cube-file-input" class="hidden" accept=".cube">
+                <input type="file" id="lut-file-input" class="hidden" accept=".cube,.png,.ilut,.olut">
             </div>
             <div class="file-drop-area">
                 <label for="image-file-input" class="file-label relative flex flex-col items-center justify-center w-full h-32 px-4 py-3 bg-white dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
                     <svg class="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <span class="text-gray-600 dark:text-gray-400 font-medium">Select Preview Image</span>
-                     <span id="image-file-label" class="text-sm text-gray-500">or drag and drop</span>
+                    <span id="image-file-name" class="text-gray-600 dark:text-gray-400 font-medium">Select Preview Image</span>
+                     <span class="text-sm text-gray-500">or drag and drop</span>
                 </label>
                 <input type="file" id="image-file-input" class="hidden" accept="image/*">
             </div>
@@ -128,7 +128,7 @@
         <div id="processing-indicator" class="text-center pt-4 hidden">
              <div class="flex justify-center items-center">
                 <div class="loader"></div>
-                <p class="ml-4 text-gray-600 dark:text-gray-400">Analyzing CUBE file...</p>
+                <p class="ml-4 text-gray-600 dark:text-gray-400">Analyzing LUT file...</p>
             </div>
         </div>
 
@@ -162,17 +162,17 @@
     </div>
 
     <script>
-        // --- Web Worker Code as a string ---
+        // --- Web Worker Code ---
         const workerCode = `
-            const linAlg={multiply:(A,B)=>{const C=Array(A.length).fill(0).map(()=>Array(B[0].length).fill(0));return C.map((r,i)=>r.map((_,j)=>A[i].reduce((s,_,k)=>s+A[i][k]*B[k][j],0)))},transpose:A=>A[0].map((_,c)=>A.map(r=>r[c])),invert:A=>{const d=A[0][0]*(A[1][1]*A[2][2]-A[2][1]*A[1][2])-A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])+A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);if(d===0)return null;const i=1/d,C=[[A[1][1]*A[2][2]-A[2][1]*A[1][2],A[0][2]*A[2][1]-A[0][1]*A[2][2],A[0][1]*A[1][2]-A[0][2]*A[1][1]],[A[1][2]*A[2][0]-A[1][0]*A[2][2],A[0][0]*A[2][2]-A[0][2]*A[2][0],A[1][0]*A[0][2]-A[0][0]*A[1][2]],[A[1][0]*A[2][1]-A[2][0]*A[1][1],A[2][0]*A[0][1]-A[0][0]*A[2][1],A[0][0]*A[1][1]-A[1][0]*A[0][1]]];return C.map(r=>r.map(v=>v*i))}};function trilinearInterpolate(r,g,b,lut){const{size,lut3D,domainMin,domainMax}=lut;r=Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));g=Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));b=Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));const x=r*(size-1),y=g*(size-1),z=b*(size-1),x0=Math.floor(x),y0=Math.floor(y),z0=Math.floor(z),x1=Math.min(x0+1,size-1),y1=Math.min(y0+1,size-1),z1=Math.min(z0+1,size-1),xd=x-x0,yd=y-y0,zd=z-z0;const i=(i,j,k)=>lut3D[i+j*size+k*size*size],c000=i(x0,y0,z0),c100=i(x1,y0,z0),c010=i(x0,y1,z0),c110=i(x1,y1,z0),c001=i(x0,y0,z1),c101=i(x1,y0,z1),c011=i(x0,y1,z1),c111=i(x1,y1,z1);const lerp=(a,b,t)=>a*(1-t)+b*t,lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));const c00=lerpVector(c000,c100,xd),c01=lerpVector(c001,c101,xd),c10=lerpVector(c010,c110,xd),c11=lerpVector(c011,c111,xd),c0=lerpVector(c00,c10,yd),c1=lerpVector(c01,c11,yd);return lerpVector(c0,c1,zd)}
+            const linAlg={multiply:(A,B)=>{const C=Array(A.length).fill(0).map(()=>Array(B[0].length).fill(0));return C.map((r,i)=>r.map((_,j)=>A[i].reduce((s,_,k)=>s+A[i][k]*B[k][j],0)))},transpose:A=>A[0].map((_,c)=>A.map(r=>r[c])),invert:A=>{const d=A[0][0]*(A[1][1]*A[2][2]-A[2][1]*A[1][2])-A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])+A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);if(d===0)return null;const i=1/d,C=[[A[1][1]*A[2][2]-A[2][1]*A[1][2],A[0][2]*A[2][1]-A[0][1]*A[2][2],A[0][1]*A[1][2]-A[0][2]*A[1][1]],[A[1][2]*A[2][0]-A[1][0]*A[2][2],A[0][0]*A[2][2]-A[0][2]*A[2][0],A[1][0]*A[0][2]-A[0][0]*A[1][2]],[A[1][0]*A[2][1]-A[2][0]*A[1][1],A[2][0]*A[0][1]-A[0][0]*A[2][1],A[0][0]*A[1][1]-A[1][0]*A[0][1]]];return C.map(r=>r.map(v=>v*i))}};function trilinearInterpolate(r,g,b,lut){const{size,lut3D,domainMin,domainMax}=lut;r=Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));g=Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));b=Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));const x=r*(size-1),y=g*(size-1),z=b*(size-1),x0=Math.floor(x),y0=Math.floor(y),z0=Math.floor(z),x1=Math.min(x0+1,size-1),y1=Math.min(y0+1,size-1),z1=Math.min(z0+1,size-1),xd=x-x0,yd=y-y0,zd=z-z0;const i=(i,j,k)=>lut3D[i+j*size+k*size*size],c000=i(x0,y0,z0),c100=i(x1,y0,z0),c010=i(x0,y1,z0),c110=i(x1,y1,z0),c001=i(x0,y0,z1),c101=i(x1,y0,z1),c011=i(x0,y1,z1),c111=i(x1,y1,z1);const lerp=(a,b,t)=>a*(1-t)+b*t,lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));const c00=lerpVector(c000,c100,xd),c01=lerpVector(c001,c101,xd),c10=lerpVector(c010,c110,xd),c11=lerpVector(c011,c111,xd),c0=lerpVector(c00,c10,yd),c1=lerpVector(c01,c11,yd);return lerpVector(c0, c1, zd)}
             self.onmessage=function(e){const lut=e.data,samples=25,inputs=[],outputs=[];for(let r=0;r<samples;r++)for(let g=0;g<samples;g++)for(let b=0;b<samples;b++){const i=[r/(samples-1),g/(samples-1),b/(samples-1)];inputs.push(i);outputs.push(trilinearInterpolate(i[0],i[1],i[2],lut))}const Y=linAlg.transpose(outputs),X=linAlg.transpose(inputs),Xt=inputs,XtX=linAlg.multiply(X,Xt),XtX_inv=linAlg.invert(XtX);if(!XtX_inv){self.postMessage({error:'Matrix calculation failed. The CUBE may not have enough color data.'});return}const YXt=linAlg.multiply(Y,Xt),M=linAlg.multiply(YXt,XtX_inv),matrixOutputs=linAlg.transpose(linAlg.multiply(M,X));const sums={r:new Array(256).fill(0),g:new Array(256).fill(0),b:new Array(256).fill(0)},counts={r:new Array(256).fill(0),g:new Array(256).fill(0),b:new Array(256).fill(0)};for(let i=0;i<inputs.length;i++){const o=inputs[i],f=outputs[i],m=matrixOutputs[i],r=[f[0]-m[0],f[1]-m[1],f[2]-m[2]];const ri=Math.round(o[0]*255),gi=Math.round(o[1]*255),bi=Math.round(o[2]*255);sums.r[ri]+=o[0]+r[0];counts.r[ri]++;sums.g[gi]+=o[1]+r[1];counts.g[gi]++;sums.b[bi]+=o[2]+r[2];counts.b[bi]++}const curves={r:new Array(256),g:new Array(256),b:new Array(256)};const fillGaps=(c,s,n)=>{for(let i=0;i<256;i++)if(n[i]>0)c[i]=Math.round(Math.max(0,Math.min(1,s[i]/n[i]))*255);let l=-1;for(let i=0;i<256;i++)if(n[i]>0){if(l===-1)for(let j=0;j<i;j++)c[j]=c[i];else for(let j=l+1;j<i;j++)c[j]=Math.round(c[l]+(c[i]-c[l])*(j-l)/(i-l));l=i}if(l!==-1&&l<255)for(let i=l+1;i<256;i++)c[i]=c[l];if(l===-1)for(let i=0;i<256;i++)c[i]=i};fillGaps(curves.r,sums.r,counts.r);fillGaps(curves.g,sums.g,counts.g);fillGaps(curves.b,sums.b,counts.b);self.postMessage({matrix:M.flat().map(v=>Math.round(v*1024)),curves})};
         `;
 
         // DOM Elements
-        const cubeInput = document.getElementById('cube-file-input');
+        const lutInput = document.getElementById('lut-file-input');
         const imageInput = document.getElementById('image-file-input');
-        const cubeLabelSpan = document.querySelector('#cube-file-label span:first-of-type');
-        const imageLabelSpan = document.querySelector('#image-file-label span:first-of-type');
+        const lutLabelSpan = document.getElementById('lut-file-name');
+        const imageLabelSpan = document.getElementById('image-file-name');
         const convertButton = document.getElementById('convert-button');
         const actionArea = document.getElementById('action-area');
         const processingIndicator = document.getElementById('processing-indicator');
@@ -192,11 +192,10 @@
         let analysisWorker;
 
         // Event Listeners
-        cubeInput.addEventListener('change', handleCubeFileSelect);
+        lutInput.addEventListener('change', handleLutFileSelect);
         imageInput.addEventListener('change', handleImageFileSelect);
         convertButton.addEventListener('click', handleDownload);
         
-        // Drag and Drop functionality
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             document.body.addEventListener(eventName, e => e.preventDefault());
         });
@@ -217,46 +216,92 @@
                 }
             });
         });
-
-        async function handleCubeFileSelect(event) {
+        
+        async function handleLutFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            originalFileName = file.name.replace(/\.cube$/i, '');
-            cubeLabelSpan.textContent = file.name;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const cubeFileContent = e.target.result;
-                previewSection.classList.add('hidden');
-                actionArea.classList.add('hidden');
-                processingIndicator.classList.remove('hidden');
-                hideError();
+            originalFileName = file.name.replace(/\.(cube|png|ilut|olut)$/i, '');
+            if(lutLabelSpan) lutLabelSpan.textContent = file.name;
 
-                await new Promise(resolve => setTimeout(resolve, 50));
+            previewSection.classList.add('hidden');
+            actionArea.classList.add('hidden');
+            processingIndicator.classList.remove('hidden');
+            hideError();
 
-                try {
-                    parsedLut = parseCubeFile(cubeFileContent);
-                    runAnalysisWorker(parsedLut);
-                } catch (err) {
-                    showError(err.message);
-                    processingIndicator.classList.add('hidden');
+            try {
+                const lowerCaseName = file.name.toLowerCase();
+                // Handle 3D LUTs with Web Worker
+                if (lowerCaseName.endsWith('.cube') || lowerCaseName.endsWith('.png')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        let parsePromise;
+                        if (lowerCaseName.endsWith('.cube')) {
+                            parsePromise = Promise.resolve(parseCubeFile(e.target.result));
+                        } else { // .png
+                            parsePromise = parsePngLut(e.target.result);
+                        }
+                        parsePromise.then(lutData => {
+                            parsedLut = lutData;
+                            runAnalysisWorker(parsedLut);
+                        }).catch(err => {
+                            showError(err.message);
+                            processingIndicator.classList.add('hidden');
+                        });
+                    };
+                    if (lowerCaseName.endsWith('.cube')) reader.readAsText(file);
+                    else reader.readAsDataURL(file);
+
+                // Handle 1D LUTs on the main thread
+                } else if (lowerCaseName.endsWith('.ilut') || lowerCaseName.endsWith('.olut')) {
+                     const reader = new FileReader();
+                     reader.onload = (e) => {
+                        try {
+                            let oneDCurve;
+                            if (lowerCaseName.endsWith('.ilut')) {
+                                oneDCurve = parse1DLut(e.target.result, 16383);
+                            } else { // .olut
+                                oneDCurve = parse1DLut(e.target.result, 4095);
+                            }
+                            
+                            // For 1D LUTs, the conversion is direct.
+                            // The matrix is identity, and all channels use the same curve.
+                            conversionResult = {
+                                matrix: [1024, 0, 0, 0, 1024, 0, 0, 0, 1024],
+                                curves: {
+                                    r: oneDCurve,
+                                    g: oneDCurve,
+                                    b: oneDCurve,
+                                }
+                            };
+                            parsedLut = { type: '1D', curves: conversionResult.curves }; // Special object for previewing
+                            
+                            generatedFltContent = formatFltFile(conversionResult.matrix, conversionResult.curves);
+                            actionArea.classList.remove('hidden');
+                            if (originalImage) showPreviews();
+                            processingIndicator.classList.add('hidden');
+
+                        } catch (err) {
+                            showError(err.message);
+                            processingIndicator.classList.add('hidden');
+                        }
+                    };
+                    reader.readAsText(file);
+                } else {
+                    throw new Error("Unsupported file type. Please use .cube, .png, .ilut, or .olut");
                 }
-            };
-            reader.readAsText(file);
+            } catch (err) {
+                 showError(err.message);
+                 processingIndicator.classList.add('hidden');
+            }
         }
         
         function runAnalysisWorker(lutData) {
             if (analysisWorker) analysisWorker.terminate();
-            
             const blob = new Blob([workerCode], { type: 'application/javascript' });
             analysisWorker = new Worker(URL.createObjectURL(blob));
-
             analysisWorker.onmessage = (e) => {
-                if(e.data.error) {
-                    showError(e.data.error);
-                    processingIndicator.classList.add('hidden');
-                    return;
-                }
+                if(e.data.error) { showError(e.data.error); processingIndicator.classList.add('hidden'); return; }
                 conversionResult = e.data;
                 generatedFltContent = formatFltFile(conversionResult.matrix, conversionResult.curves);
                 actionArea.classList.remove('hidden');
@@ -264,20 +309,14 @@
                 processingIndicator.classList.add('hidden');
                 analysisWorker.terminate(); 
             };
-            
-            analysisWorker.onerror = (e) => {
-                showError(`Worker error: ${e.message}`);
-                processingIndicator.classList.add('hidden');
-                analysisWorker.terminate();
-            };
-
+            analysisWorker.onerror = (e) => { showError(`Worker error: ${e.message}`); processingIndicator.classList.add('hidden'); analysisWorker.terminate(); };
             analysisWorker.postMessage(lutData);
         }
 
         function handleImageFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
-            imageLabelSpan.textContent = file.name;
+            if(imageLabelSpan) imageLabelSpan.textContent = file.name;
             const reader = new FileReader();
             reader.onload = e => {
                 originalImage = new Image();
@@ -308,9 +347,18 @@
             ctx.drawImage(originalImage, 0, 0);
             const imageData = ctx.getImageData(0, 0, canvasLut.width, canvasLut.height);
             const data = imageData.data;
+            // Apply based on LUT type
             for (let i = 0; i < data.length; i += 4) {
-                const c = trilinearInterpolate(data[i]/255, data[i+1]/255, data[i+2]/255, parsedLut);
-                data[i] = c[0] * 255; data[i+1] = c[1] * 255; data[i+2] = c[2] * 255;
+                let r = data[i], g = data[i+1], b = data[i+2];
+                if (parsedLut.type === '1D') {
+                    r = parsedLut.curves.r[r];
+                    g = parsedLut.curves.g[g];
+                    b = parsedLut.curves.b[b];
+                } else { // 3D LUT
+                    const c = trilinearInterpolate(r/255, g/255, b/255, parsedLut);
+                    r = c[0] * 255; g = c[1] * 255; b = c[2] * 255;
+                }
+                data[i] = r; data[i+1] = g; data[i+2] = b;
             }
             ctx.putImageData(imageData, 0, 0);
         }
@@ -323,13 +371,13 @@
             const imageData = ctx.getImageData(0, 0, canvasFlt.width, canvasFlt.height);
             const data = imageData.data;
             for (let i = 0; i < data.length; i += 4) {
-                const r_in = data[i]/255, g_in = data[i+1]/255, b_in = data[i+2]/255;
-                const r_mat = r_in * matrix[0]/1024 + g_in * matrix[1]/1024 + b_in * matrix[2]/1024;
-                const g_mat = r_in * matrix[3]/1024 + g_in * matrix[4]/1024 + b_in * matrix[5]/1024;
-                const b_mat = r_in * matrix[6]/1024 + g_in * matrix[7]/1024 + b_in * matrix[8]/1024;
-                data[i]   = curves.r[Math.round(Math.max(0, Math.min(1, r_mat)) * 255)];
-                data[i+1] = curves.g[Math.round(Math.max(0, Math.min(1, g_mat)) * 255)];
-                data[i+2] = curves.b[Math.round(Math.max(0, Math.min(1, b_mat)) * 255)];
+                const r_in=data[i]/255,g_in=data[i+1]/255,b_in=data[i+2]/255;
+                const r_mat=r_in*matrix[0]/1024+g_in*matrix[1]/1024+b_in*matrix[2]/1024;
+                const g_mat=r_in*matrix[3]/1024+g_in*matrix[4]/1024+b_in*matrix[5]/1024;
+                const b_mat=r_in*matrix[6]/1024+g_in*matrix[7]/1024+b_in*matrix[8]/1024;
+                data[i]=curves.r[Math.round(Math.max(0,Math.min(1,r_mat))*255)];
+                data[i+1]=curves.g[Math.round(Math.max(0,Math.min(1,g_mat))*255)];
+                data[i+2]=curves.b[Math.round(Math.max(0,Math.min(1,b_mat))*255)];
             }
             ctx.putImageData(imageData, 0, 0);
         }
@@ -353,54 +401,26 @@
             URL.revokeObjectURL(url);
         }
         
-        function parseCubeFile(cubeData) {
-            const lines = cubeData.split('\n').map(l => l.trim().split('#')[0]);
-            let size=0, lut3D=[], domainMin=[0,0,0], domainMax=[1,1,1], dataStarted=false;
-            for (const line of lines) {
-                if (!line) continue;
-                if(dataStarted){
-                    const p = line.split(/\s+/).map(Number);
-                    if (p.length===3 && !p.some(isNaN)) lut3D.push(p);
-                    continue;
-                }
-                const p = line.split(/\s+/); const key = p[0].toUpperCase();
-                if (key === 'LUT_3D_SIZE') size = parseInt(p[1]);
-                else if (key === 'DOMAIN_MIN') domainMin = p.slice(1).map(Number);
-                else if (key === 'DOMAIN_MAX') domainMax = p.slice(1).map(Number);
-                else if (/^[\d.eE+-]/.test(line)){
-                    if (size===0) throw new Error("LUT size not defined.");
-                    dataStarted = true;
-                    const d = line.split(/\s+/).map(Number);
-                    if (d.length===3 && !d.some(isNaN)) lut3D.push(d);
-                }
+        function parseCubeFile(cubeData){const lines=cubeData.split(/[\n\r]+/).map(l=>l.trim().split('#')[0]);let size=0,lut3D=[],domainMin=[0,0,0],domainMax=[1,1,1],dataStarted=false;for(const line of lines){if(!line)continue;if(dataStarted){const p=line.split(/\s+/).map(Number);if(p.length===3&&!p.some(isNaN))lut3D.push(p);continue}const p=line.split(/\s+/);const key=p[0].toUpperCase();if(key==='LUT_3D_SIZE')size=parseInt(p[1]);else if(key==='DOMAIN_MIN')domainMin=p.slice(1).map(Number);else if(key==='DOMAIN_MAX')domainMax=p.slice(1).map(Number);else if(/^[\d.eE+-]/.test(line)){if(size===0)throw new Error("LUT size not defined.");dataStarted=true;const d=line.split(/\s+/).map(Number);if(d.length===3&&!d.some(isNaN))lut3D.push(d)}}if(size===0||lut3D.length!==size*size*size)throw new Error('Invalid CUBE file.');return{size,lut3D,domainMin,domainMax}}
+        function parsePngLut(dataUrl){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{const size=Math.round(Math.cbrt(img.width*img.height));if(size*size*size!==img.width*img.height||img.width!==size*size){return reject(new Error('Invalid PNG LUT dimensions. Image must be a square HALD.'))}const canvas=document.createElement('canvas');canvas.width=img.width;canvas.height=img.height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);const imageData=ctx.getImageData(0,0,img.width,img.height);const data=imageData.data;const lut3D=[];for(let i=0;i<data.length;i+=4){lut3D.push([data[i]/255,data[i+1]/255,data[i+2]/255])}resolve({size:size,lut3D:lut3D,domainMin:[0,0,0],domainMax:[1,1,1]})};img.onerror=()=>reject(new Error('Failed to load PNG LUT image.'));img.src=dataUrl})}
+        function parse1DLut(textData, maxValue) {
+            const values = textData.split(/[\n\r]+/).filter(Boolean).map(line => parseInt(line.split(',')[0], 10));
+            if (values.length < 2) throw new Error('1D LUT file has too few data points.');
+            const normalized = values.map(v => v / maxValue);
+            const resampled = new Array(256);
+            for (let i = 0; i < 256; i++) {
+                const p = i / 255 * (normalized.length - 1);
+                const i0 = Math.floor(p);
+                const i1 = Math.min(i0 + 1, normalized.length - 1);
+                const t = p - i0;
+                resampled[i] = Math.round(((normalized[i0] * (1 - t)) + (normalized[i1] * t)) * 255);
             }
-            if (size===0 || lut3D.length !== size*size*size) throw new Error('Invalid CUBE file.');
-            return { size, lut3D, domainMin, domainMax };
+            return resampled;
         }
-        
-        // This function is only used for the preview now. The worker has its own copy.
-        function trilinearInterpolate(r, g, b, lut) {
-            const { size, lut3D, domainMin, domainMax } = lut;
-            r = Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));
-            g = Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));
-            b = Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));
-            const x=r*(size-1), y=g*(size-1), z=b*(size-1);
-            const x0=Math.floor(x), y0=Math.floor(y), z0=Math.floor(z);
-            const x1=Math.min(x0+1,size-1), y1=Math.min(y0+1,size-1), z1=Math.min(z0+1,size-1);
-            const xd=x-x0, yd=y-y0, zd=z-z0;
-            const i=(i,j,k)=>lut3D[i+j*size+k*size*size];
-            const c000=i(x0,y0,z0), c100=i(x1,y0,z0), c010=i(x0,y1,z0), c110=i(x1,y1,z0);
-            const c001=i(x0,y0,z1), c101=i(x1,y0,z1), c011=i(x0,y1,z1), c111=i(x1,y1,z1);
-            const lerp=(a,b,t)=>a*(1-t)+b*t;
-            const lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));
-            const c00=lerpVector(c000,c100,xd), c01=lerpVector(c001,c101,xd);
-            const c10=lerpVector(c010,c110,xd), c11=lerpVector(c011,c111,xd);
-            const c0=lerpVector(c00,c10,yd), c1=lerpVector(c01,c11,yd);
-            return lerpVector(c0, c1, zd);
-        }
-
-        function showError(message) { errorMessage.textContent = message; errorBox.classList.remove('hidden'); }
-        function hideError() { errorBox.classList.add('hidden'); }
+        function parseIlutFile(ilutData){return parse1DLut(ilutData, 16383);}
+        function trilinearInterpolate(r,g,b,lut){const{size,lut3D,domainMin,domainMax}=lut;r=Math.max(0,Math.min(1,(r-domainMin[0])/(domainMax[0]-domainMin[0])));g=Math.max(0,Math.min(1,(g-domainMin[1])/(domainMax[1]-domainMin[1])));b=Math.max(0,Math.min(1,(b-domainMin[2])/(domainMax[2]-domainMin[2])));const x=r*(size-1),y=g*(size-1),z=b*(size-1),x0=Math.floor(x),y0=Math.floor(y),z0=Math.floor(z),x1=Math.min(x0+1,size-1),y1=Math.min(y0+1,size-1),z1=Math.min(z0+1,size-1),xd=x-x0,yd=y-y0,zd=z-z0;const i=(i,j,k)=>lut3D[i+j*size+k*size*size],c000=i(x0,y0,z0),c100=i(x1,y0,z0),c010=i(x0,y1,z0),c110=i(x1,y1,z0),c001=i(x0,y0,z1),c101=i(x1,y0,z1),c011=i(x0,y1,z1),c111=i(x1,y1,z1);const lerp=(a,b,t)=>a*(1-t)+b*t,lerpVector=(v1,v2,t)=>!v1||!v2?[0,0,0]:v1.map((v,i)=>lerp(v,v2[i],t));const c00=lerpVector(c000,c100,xd),c01=lerpVector(c001,c101,xd),c10=lerpVector(c010,c110,xd),c11=lerpVector(c011,c111,xd),c0=lerpVector(c00,c10,yd),c1=lerpVector(c01,c11,yd);return lerpVector(c0,c1,zd)}
+        function showError(message){errorMessage.textContent=message;errorBox.classList.remove('hidden');}
+        function hideError(){errorBox.classList.add('hidden');}
         
     </script>
 </body>
